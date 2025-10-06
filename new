@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+# new - cp wrapper for code templates
+# Usage: new [OPTION]... TEMPLATE_NAME DESTINATION
+
+TEMPLATES_DIR=${TEMPLATES_DIR:-$XDG_DATA_HOME/templates}
+USAGE="Usage: new [OPTION]... TEMPLATE_NAME DESTINATION"
+
+git_repo=''
+n_of_flags=0
+
+while test $# -gt 0; do
+    case "$1" in
+    -h | --help)
+        echo "new - cp wrapper for code templates"
+        echo "$USAGE"
+        echo " "
+        echo "Looks for templates in TEMPLATES_DIR env variable, defaults to \
+XDG_DATA_HOME/templates"
+        echo " "
+        echo "options:"
+        echo "  -h, --help                   display this help and exit"
+        echo "  -g, --git-init, --git-repo   initializes a git repository \
+inside DESTINATION"
+        exit 0
+        ;;
+    -g | --git-init | --git-repo)
+        git_repo='true'
+        ((n_of_flags += 1))
+        break
+        ;;
+    *)
+        break
+        ;;
+    esac
+done
+
+n_of_mandatory_args=2 # only two mandatory arguments: TEMPLATE and DESTINATION
+
+if test $(($# - n_of_flags)) -ne $n_of_mandatory_args; then
+    echo "$USAGE"
+    exit 1
+fi
+
+args=("$@")
+offset=0
+base_index=0
+if test $# -gt $n_of_mandatory_args; then
+    offset=$(($# - n_of_mandatory_args))
+fi
+
+TEMPLATE=${TEMPLATES_DIR}/${args[base_index + offset]}
+DESTINATION=${args[base_index + offset + 1]}
+
+cp --recursive "$TEMPLATE" "$DESTINATION"
+
+if [ $git_repo ]; then
+    git init "$DESTINATION"
+fi

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+${VALGRIND_BIN:-valgrind} "$@"
+EXIT_STATUS=$?
+if (ls vgcore* 1>/dev/null 2>&1); then rm vgcore.*; fi
+exit ${EXIT_STATUS}

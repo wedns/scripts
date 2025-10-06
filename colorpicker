@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# -n           - Disables colored output
+# sed 's/^#//' - Removes the prefixed `#`
+# tr -d '\n'   - Removes the suffixed `\n`
+hyprpicker -n | sed 's/^#//' | tr -d '\n' | wl-copy

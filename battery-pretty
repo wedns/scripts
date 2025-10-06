@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+PERCENTAGE=$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)
+STATUS=$(cat /sys/class/power_supply/BAT0/status 2>/dev/null)
+
+if [[ "$STATUS" == "Charging" ]]; then
+    ICON=" "
+else
+    if [[ $PERCENTAGE -ge 95 ]]; then
+        ICON="󰁹 "
+    elif [[ $PERCENTAGE -ge 90 ]]; then
+        ICON="󰂂 "
+    elif [[ $PERCENTAGE -ge 80 ]]; then
+        ICON="󰂁 "
+    elif [[ $PERCENTAGE -ge 70 ]]; then
+        ICON="󰂀 "
+    elif [[ $PERCENTAGE -ge 60 ]]; then
+        ICON="󰁿 "
+    elif [[ $PERCENTAGE -ge 50 ]]; then
+        ICON="󰁾 "
+    elif [[ $PERCENTAGE -ge 40 ]]; then
+        ICON="󰁽 "
+    elif [[ $PERCENTAGE -ge 30 ]]; then
+        ICON="󰁼 "
+    elif [[ $PERCENTAGE -ge 20 ]]; then
+        ICON="󰁻 "
+    elif [[ $PERCENTAGE -ge 10 ]]; then
+        ICON="󰁺 "
+    elif [[ $PERCENTAGE -ge 1 ]]; then
+        ICON="󰂎 "
+    else
+        ICON="󱟨 "
+    fi
+fi
+
+echo "$ICON$PERCENTAGE%"
