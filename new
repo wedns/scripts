@@ -52,7 +52,7 @@ fi
 TEMPLATE=${TEMPLATES_DIR}/${args[base_index + offset]}
 DESTINATION=${args[base_index + offset + 1]}
 
-cp --recursive "$TEMPLATE" "$DESTINATION"
+cp -r "$TEMPLATE" "$DESTINATION"
 
 if [ $git_repo ]; then
     git init "$DESTINATION"
